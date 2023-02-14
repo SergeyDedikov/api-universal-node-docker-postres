@@ -3,6 +3,7 @@ version: "3"
 services:
     # Контейнер с Node.js
     app:
+        container_name: api_universal
         build:
             context: ./app
             target: dev
@@ -20,6 +21,7 @@ services:
 
     # Контейнер с базой данных
     db:
+        container_name: db
         image: postgres:12-alpine
         environment:
             - POSTGRES_USER=${DB_USER}
