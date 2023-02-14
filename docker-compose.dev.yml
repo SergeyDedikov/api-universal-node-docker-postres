@@ -52,8 +52,8 @@ services:
             - db
         image: dpage/pgadmin4
         environment:
-            PGADMIN_DEFAULT_EMAIL: info@proglib.io
-            PGADMIN_DEFAULT_PASSWORD: qwertyuiop
+            PGADMIN_DEFAULT_EMAIL: serded59@ya.ru
+            PGADMIN_DEFAULT_PASSWORD: qwerty13579
         expose:
             - "80"
         restart: always
