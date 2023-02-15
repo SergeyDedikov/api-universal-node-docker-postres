@@ -7,11 +7,12 @@ router.get("/", (_req, res) => {
     });
 });
 
-// Обработка всего остального
-router.get("/*", (_req, res) => {
-    res.status(400).json({
+// Обработка несуществующих роутов
+router.use((req, res, next) => {
+    res.status(404).json({
         error: "Запрос не может быть обработан, маршрут не найден",
     });
+    next();
 });
 
 module.exports = router;

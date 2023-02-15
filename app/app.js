@@ -23,6 +23,10 @@ pool.query("SELECT NOW()", (err, res) => {
 // Routes
 app.use(router);
 
+// Errors handler
+const errorHandler = require("./middlewares/error-handler");
+app.use(errorHandler);
+
 app.listen(3000, () => {
     console.log("Сервер запущен");
 });
