@@ -1,3 +1,6 @@
+// ENV const
+const { PORT = 3000, NODE_ENV } = process.env;
+
 // Express
 const express = require("express");
 const app = express();
@@ -6,7 +9,7 @@ const app = express();
 const router = require("./routes");
 
 // DB
-const { Pool } = require("pg");
+/* const { Pool } = require("pg");
 const pool = new Pool({
     user: process.env.DB_USER,
     host: process.env.DB_HOST,
@@ -18,7 +21,7 @@ const pool = new Pool({
 pool.query("SELECT NOW()", (err, res) => {
     console.log(err, res);
     pool.end();
-});
+}); */
 
 // CORS
 const cors = require("cors");
@@ -43,8 +46,39 @@ app.use(router);
 const errorHandler = require("./middlewares/error-handler");
 app.use(errorHandler);
 
-// set port, listen for requests
-const PORT = process.env.PORT || 3000;
+// DB sequelize
+const db = require("./models");
+const Role = db.role;
+
+function initialRole() {
+    Role.create({
+        id: 1,
+        name: "user",
+    });
+
+    Role.create({
+        id: 2,
+        name: "moderator",
+    });
+
+    Role.create({
+        id: 3,
+        name: "admin",
+    });
+}
+
+if (NODE_ENV !== "production") {
+    db.sequelize.sync({ force: true }).then(() => {
+        console.log("DEV: Drop and Resync DB");
+        initialRole();
+    });
+} else {
+    // else production
+    db.sequelize.sync();
+}
+
+// listen for requests
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
+    console.log(NODE_ENV);
 });
