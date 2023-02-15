@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const NotFoundError = require("../errors/not-found-error");
 
 // Главная
 router.get("/", (_req, res) => {
@@ -9,10 +10,9 @@ router.get("/", (_req, res) => {
 
 // Обработка несуществующих роутов
 router.use((req, res, next) => {
-    res.status(404).json({
-        error: "Запрос не может быть обработан, маршрут не найден",
-    });
-    next();
+    next(
+        new NotFoundError("Запрос не может быть обработан, маршрут не найден")
+    );
 });
 
 module.exports = router;
