@@ -20,6 +20,22 @@ pool.query("SELECT NOW()", (err, res) => {
     pool.end();
 });
 
+// CORS
+const cors = require("cors");
+var corsOptions = {
+    origin: "http://localhost:3001",
+};
+app.use(cors(corsOptions));
+
+// Body parser
+const bodyParser = require("body-parser");
+
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
+
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // Routes
 app.use(router);
 
@@ -27,6 +43,8 @@ app.use(router);
 const errorHandler = require("./middlewares/error-handler");
 app.use(errorHandler);
 
-app.listen(3000, () => {
-    console.log("Сервер запущен");
+// set port, listen for requests
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
 });
