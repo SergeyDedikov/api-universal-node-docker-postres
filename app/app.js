@@ -1,12 +1,19 @@
+// Imports node modules
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
+// Imports app modules
+const { errorHandler } = require("./middlewares");
+const db = require("./models");
+const router = require("./routes");
+
 // ENV const
 const { PORT = 3000, NODE_ENV } = process.env;
 
 // Express
-const express = require("express");
 const app = express();
-
-// Router
-const router = require("./routes");
 
 // DB
 /* const { Pool } = require("pg");
@@ -24,15 +31,12 @@ pool.query("SELECT NOW()", (err, res) => {
 }); */
 
 // CORS
-const cors = require("cors");
 var corsOptions = {
     origin: "http://localhost:3001",
 };
 app.use(cors(corsOptions));
 
 // Body parser
-const bodyParser = require("body-parser");
-
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
 
@@ -40,18 +44,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Cookies parser
-const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
 // Routes
 app.use(router);
 
 // Errors handler
-const { errorHandler } = require("./middlewares");
 app.use(errorHandler);
 
 // DB sequelize
-const db = require("./models");
 const Role = db.role;
 
 function initialRole() {
