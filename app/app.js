@@ -39,11 +39,15 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Cookies parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 // Routes
 app.use(router);
 
 // Errors handler
-const errorHandler = require("./middlewares/error-handler");
+const { errorHandler } = require("./middlewares");
 app.use(errorHandler);
 
 // DB sequelize
